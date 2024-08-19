@@ -1,4 +1,6 @@
+import 'package:firebase_flutter_test/services/auth.dart';
 import 'package:flutter/material.dart';
+import 'dart:developer' as dev;
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -9,6 +11,21 @@ class SignUp extends StatefulWidget {
 
 class _SignUpState extends State<SignUp> {
   bool _isObscure = true;
+
+  final _name = TextEditingController();
+  final _email = TextEditingController();
+  final _password = TextEditingController();
+
+  final _auth = AuthService();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _name.dispose();
+    _email.dispose();
+    _password.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +45,10 @@ class _SignUpState extends State<SignUp> {
       ),
 
       body: Padding(
-        padding: EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Align(
               alignment: Alignment.centerLeft,
@@ -57,32 +74,35 @@ class _SignUpState extends State<SignUp> {
               ),
             ),
 
-            SizedBox(height: 50,),
+            const SizedBox(height: 50,),
 
-            const TextField(
+            TextFormField(
               keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Name",
                 hintText: "Enter your name",
               ),
+              controller: _name,
             ),
 
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
 
-            const TextField(
+            TextFormField(
               keyboardType: TextInputType.emailAddress,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Email",
                 hintText: "Enter your email",
               ),
+              controller: _email,
             ),
 
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
 
-            TextField(
+            TextFormField(
               obscureText: _isObscure,
+              controller: _password,
               decoration: InputDecoration(
                 border: OutlineInputBorder(),
                 labelText: "Password",
@@ -98,13 +118,14 @@ class _SignUpState extends State<SignUp> {
               ),
             ),
 
-            SizedBox(height: 20,),
+            const SizedBox(height: 20,),
 
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: (){
+                onPressed: () async {
                   // Sign up new user
+                  await _auth.signUpWithEmailAndPassword(_name.text, _email.text, _password.text);
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.blueAccent),
                 child: const Text(
