@@ -125,7 +125,7 @@ class _SignUpState extends State<SignUp> {
               child: ElevatedButton(
                 onPressed: () async {
                   // Sign up new user
-                  await _auth.signUpWithEmailAndPassword(_name.text, _email.text, _password.text);
+                  await _auth.signUpWithEmailAndPassword(context ,_name.text, _email.text, _password.text);
                 },
                 style: ElevatedButton.styleFrom(backgroundColor: Colors.blueAccent),
                 child: const Text(
